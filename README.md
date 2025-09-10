@@ -46,9 +46,13 @@ Admin Interface: Manage events, bookings, speakers, and sessions (attendee creat
 API Endpoints
 
 POST /api/register/: Register a new user.
+
 POST /api/login/: Obtain an authentication token.
+
 GET /api/events/: List all events.
+
 POST /api/book/: Book seats for an event (authenticated users only).
+
 POST /api/events/create/: Create a new event (admin only).
 
 Requirements
