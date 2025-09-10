@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 
 class Attendee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -25,6 +26,12 @@ class Event(models.Model):
     total_seats = models.IntegerField()
     available_seats = models.IntegerField(default=0)
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(
+        upload_to='event_images/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])]
+    )
 
     def __str__(self):
         return self.event_name

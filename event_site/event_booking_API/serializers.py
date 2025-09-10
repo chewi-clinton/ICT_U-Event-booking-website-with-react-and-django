@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Event, Booking
+from .models import Event, Booking, Attendee
 
 class UserSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(write_only=True)
@@ -13,11 +13,17 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         phone = validated_data.pop("phone")
         user = User.objects.create_user(**validated_data)
-        user.profile_phone = phone 
-        user.save()
+        Attendee.objects.create(
+            user=user,
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone=phone
+        )
         return user
 
 class EventSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False, allow_null=True)
+
     class Meta:
         model = Event
         fields = '__all__'
